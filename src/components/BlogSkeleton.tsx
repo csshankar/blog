@@ -1,4 +1,5 @@
 import { Circle } from "./BlogCard"
+import { Spinner } from "./Spinner"
 
 export const BlogSkeleton = () => {
     return <div role="status" className="animate-pulse">
@@ -24,6 +25,6 @@ export const BlogSkeleton = () => {
                 <div className="h-2 bg-gray-200 rounded-full mb-2.5"></div>
             </div>
         </div>
-    <span className="sr-only">Loading...</span>
+    <span className="sr-only"><Spinner/></span>
 </div>
 }

@@ -19,12 +19,12 @@ export const FullBlog = ({ blog }: {blog: Blog}) => {
                     </div>
                 </div>
                 <div className="col-span-4">
-                    <div className="text-slate-600 text-lg">
+                    <div className="text-slate-600 text-lg flex justify-center">
                         Author
                     </div>
                     <div className="flex w-full">
                         <div className="pr-4 flex flex-col justify-center">
-                            <Avatar size={5} name={blog.author.name || "Anonymous"} />
+                            <Avatar size={4} name={blog.author.name || "Anonymous"} />
                         </div>
                         <div>
                             <div className="text-xl font-bold">

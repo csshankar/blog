@@ -15,11 +15,13 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
     async function sendRequest(){
         try{
             const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "signup"?"signup": "signin"}`,postInputs);
-            const jwt =response.data;
-            localStorage.setItem("token",jwt);
+            const jwt = response.data;
+            //const jwt =JSON.stringify(response.data);
+          localStorage.setItem("token",jwt);
+          console.log("frontend"+ jwt);
             navigate("/blogs");
         }catch(e){
-
+                return ("Authorization failed")
         }
     }
     return <div className="h-screen flex justify-center flex-col">
