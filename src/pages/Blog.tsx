@@ -6,7 +6,7 @@ import {useParams} from "react-router-dom";
 
 export const Blog = () => {
     const { id } = useParams();
-    const {loading, blog} = useBlog({
+        const {loading, blog} = useBlog({
         id: Number(id || 1)
     })
     if (loading || !blog) {
