@@ -7,9 +7,9 @@ export const Appbar = () =>{
            <Link to="/blogs"> Medium </Link>
         </div>
        
-        <div className="flex justify-around">
+        <div className="flex justify-around pb-1">
         <Link to="/publish">    
-            <Avatar name="Naomi Sora" size={4} />
+            <Avatar name="Naomi Sora" size={8} />
         </Link>
         </div>
 

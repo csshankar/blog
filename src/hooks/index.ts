@@ -36,39 +36,43 @@ export const useBlogs = () => {
 const [loading,setLoading]= useState(true);
 const [blogs,setBlogs]= useState<Blog[]>([]);
 const [error, setError] = useState<string | null>(null);
+const [page, setPage] = useState(1);
+const [totalPages, setTotalPages] = useState(1);
+const [limit] = useState(10);
 
 
-useEffect(()=>{
+useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-        console.log("No token found in localStorage");
-        setLoading(false);
-        return;
-    }
-    axios.get(`${BACKEND_URL}/api/v1/blog/bulk`,{
-        headers:{
-            Authorization:token
-        }
-    }).then(response =>{
-       // setBlogs(response.data.blogs);
-        
-            setBlogs(response.data.blogs); // Assuming blogs are in response.data.blogs
-        
-            
-        
-          setLoading(false);
+    const fetchData = async () => {
+    try {
        
-    }).catch(error => {
-        console.log('Error fetching blogs:', error.response ? error.response.data : error.message);
-        setError(error);
-        setLoading(false);
-      })
-},[])
+        if (!token) {
+            console.log("No token found in localStorage");
+            setLoading(false);
+            return;
+        }
+      setLoading(true);
+      const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
+        params: { page, limit },
+        headers: { Authorization: token }
+      });
+      setBlogs(response.data.blogs); // Completely replaces previous results
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  if (token) fetchData();
+}, [page, limit]);
 
 return {
     loading,
     blogs,
-    error
+    error,
+    page,
+    setPage,
+    totalPages,
+    limit
 }
 }
 
