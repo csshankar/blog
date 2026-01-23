@@ -52,11 +52,17 @@ useEffect(() => {
             return;
         }
       setLoading(true);
+      setError(null);
       const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
         params: { page, limit },
         headers: { Authorization: token }
       });
       setBlogs(response.data.blogs); // Completely replaces previous results
+      if (response.data.totalPages) {
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
