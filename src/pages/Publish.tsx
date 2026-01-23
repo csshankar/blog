@@ -9,46 +9,77 @@ export const Publish = () => {
     const [description, setDescription] = useState("");
     const navigate = useNavigate();
 
-    return <div>
-        <Appbar />
-        <div className="flex justify-center w-full pt-8"> 
-            <div className="max-w-screen-lg w-full">
-                <input onChange={(e) => {
-                    setTitle(e.target.value)
-                }} type="text" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5" placeholder="Title" />
+    return (
+        <div className="min-h-screen bg-gray-50">
+            <Appbar />
+            <div className="flex justify-center w-full pt-8 pb-16"> 
+                <div className="max-w-4xl w-full px-4 sm:px-6 lg:px-8">
+                    <div className="bg-white rounded-lg shadow-sm p-8">
+                        <h1 className="text-3xl font-bold text-gray-900 mb-8">Create a new post</h1>
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Title
+                                </label>
+                                <input 
+                                    onChange={(e) => {
+                                        setTitle(e.target.value)
+                                    }} 
+                                    type="text" 
+                                    className="w-full bg-white border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-4 placeholder-gray-400 transition-all" 
+                                    placeholder="Enter your post title..." 
+                                />
+                            </div>
 
-                <TextEditor onChange={(e) => {
-                    setDescription(e.target.value)
-                }} />
-                <button onClick={async () => {
-                    const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, {
-                        title,
-                        content: description
-                    }, {
-                        headers: {
-                            Authorization: localStorage.getItem("token")
-                        }
-                    });
-                    navigate(`/blog/${response.data.id}`)
-                }} type="submit" className="mt-4 inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                    Publish post
-                </button>
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                    Content
+                                </label>
+                                <TextEditor onChange={(e) => {
+                                    setDescription(e.target.value)
+                                }} />
+                            </div>
+                            
+                            <div className="flex justify-end pt-4">
+                                <button 
+                                    onClick={async () => {
+                                        const response = await axios.post(`${BACKEND_URL}/api/v1/blog`, {
+                                            title,
+                                            content: description
+                                        }, {
+                                            headers: {
+                                                Authorization: localStorage.getItem("token")
+                                            }
+                                        });
+                                        navigate(`/blog/${response.data.id}`)
+                                    }} 
+                                    type="submit" 
+                                    disabled={!title.trim() || !description.trim()}
+                                    className="px-6 py-3 text-sm font-semibold text-white bg-green-600 rounded-lg focus:ring-4 focus:ring-green-200 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors duration-200 shadow-sm hover:shadow-md"
+                                >
+                                    Publish post
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+    )
 }
 
 
 function TextEditor({ onChange }: {onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void}) {
-    return <div className="mt-2">
-        <div className="w-full mb-4 ">
-            <div className="flex items-center justify-between border">
-            <div className="my-2 bg-white rounded-b-lg w-full">
-                <label className="sr-only">Publish post</label>
-                <textarea onChange={onChange} id="editor" rows={8} className="focus:outline-none block w-full px-0 text-sm text-gray-800 bg-white border-0 pl-2" placeholder="Write an article..." required />
-            </div>
+    return (
+        <div className="w-full">
+            <textarea 
+                onChange={onChange} 
+                id="editor" 
+                rows={16} 
+                className="focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 block w-full px-4 py-4 text-base text-gray-800 bg-white border border-gray-300 rounded-lg placeholder-gray-400 resize-none transition-all" 
+                placeholder="Write your article here..." 
+                required 
+            />
         </div>
-       </div>
-    </div>
-    
+    )
 }

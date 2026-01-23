@@ -10,16 +10,16 @@ export const Blog = () => {
         id: Number(id || 1)
     })
     if (loading || !blog) {
-        return <div>
-            <Appbar />
-        
-            <div className="h-screen flex flex-col justify-center">
-                
-                <div className="flex justify-center">
-                    <Spinner />
+        return (
+            <div className="min-h-screen bg-gray-50">
+                <Appbar />
+                <div className="h-screen flex flex-col justify-center">
+                    <div className="flex justify-center">
+                        <Spinner />
+                    </div>
                 </div>
             </div>
-        </div>
+        )
     }
     return <div>
         <FullBlog blog={blog} />

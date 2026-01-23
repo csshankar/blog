@@ -57,9 +57,28 @@ useEffect(() => {
         params: { page, limit },
         headers: { Authorization: token }
       });
-      setBlogs(response.data.blogs); // Completely replaces previous results
-      if (response.data.totalPages) {
+      
+      const blogsData = response.data.blogs || [];
+      setBlogs(blogsData);
+      
+      // Calculate total pages from backend response
+      if (response.data.totalPages !== undefined && response.data.totalPages !== null) {
         setTotalPages(response.data.totalPages);
+      } else if (response.data.total !== undefined && response.data.total !== null) {
+        setTotalPages(Math.ceil(response.data.total / limit));
+      } else {
+        // Fallback: If we got exactly 'limit' blogs, assume there might be more pages
+        // If we got fewer, we're on the last page
+        if (blogsData.length === limit) {
+          // We got a full page, so there might be more - set to at least current page + 1
+          setTotalPages(prev => {
+            // If we're on a higher page than what we previously thought was the last page, update it
+            return Math.max(prev, page + 1);
+          });
+        } else {
+          // We got fewer than limit, so this is the last page
+          setTotalPages(page);
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

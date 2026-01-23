@@ -1,22 +1,22 @@
 export const Quote = () =>{
     return (
-        <div className="bg-slate-200 h-screen flex justify-center flex-col">
-        <div className="flex justify-center">
-        <div className="max-w-lg">
-            <div className="font-bold text-4xl">
-            "There is nothing to worry,it will get sorted..""
+        <div className="bg-gradient-to-br from-green-50 to-green-100 h-screen flex justify-center flex-col px-8">
+            <div className="flex justify-center">
+                <div className="max-w-lg">
+                    <div className="text-6xl text-green-600 mb-6 opacity-20">
+                        "
+                    </div>
+                    <div className="font-bold text-4xl lg:text-5xl text-gray-900 leading-tight mb-6">
+                        "There is nothing to worry, it will get sorted..."
+                    </div>
+                    <div className="text-xl font-semibold text-gray-800 mb-2">
+                        People have done it
+                    </div>
+                    <div className="text-lg text-gray-600">
+                        — Julia
+                    </div>
+                </div>
             </div>
-            <div className="text-semibold text-xl text-start pt-3 pl-1">
-                people have done it 
-
-            </div>
-            <div className="text text-pretty text-start text-slate-400 pl-1">
-                -juila
-            </div>
-         
-        </div>
-        </div>
-
         </div>
     )
 }
