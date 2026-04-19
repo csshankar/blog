@@ -2,7 +2,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@instructiveagonizing/medium-common": ["node_modules/@instructiveagonizing/medium-common/src/index.ts"]
     }
   },
   "files": [],
