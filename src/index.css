@@ -4,15 +4,17 @@
 
 @layer base {
   body {
-    @apply antialiased;
+    @apply antialiased text-gray-900;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
   }
 }
 
 @layer utilities {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .font-serif {
+    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
   }
 }

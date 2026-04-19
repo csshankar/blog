@@ -3,14 +3,26 @@ import axios from "axios";
 import {BACKEND_URL} from "../config"
 
 
-export interface Blog{
-    "content" :string;
-    "title" :string;
-    "id":number;
-    "author":{
-        "name" : string
+export interface Blog {
+    "content": string;
+    "title": string;
+    "id": number;
+    "description"?: string;
+    "thumbnail"?: string;
+    "createdAt": string;
+    "likesCount"?: number;
+    "isLiked"?: boolean;
+    "category"?: { id: number; name: string };
+    "author": {
+        "name": string
     }
 }
+
+export interface Category {
+    id: number;
+    name: string;
+}
+
 export const useBlog = ({id}:{id:number})=>{
     const [loading,setLoading]= useState(true);
     const [blog,setBlog]= useState<Blog>();
@@ -19,7 +31,7 @@ export const useBlog = ({id}:{id:number})=>{
 useEffect(()=>{
     axios.get(`${BACKEND_URL}/api/v1/blog/${id}`,{
         headers:{
-            Authorization:localStorage.getItem("token")
+            Authorization: `Bearer ${localStorage.getItem("token")}`
         }
     }).then(response =>{
         setBlog(response.data.blog);
@@ -39,6 +51,7 @@ const [error, setError] = useState<string | null>(null);
 const [page, setPage] = useState(1);
 const [totalPages, setTotalPages] = useState(1);
 const [limit] = useState(10);
+const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
 
 useEffect(() => {
@@ -47,39 +60,19 @@ useEffect(() => {
     try {
        
         if (!token) {
-            console.log("No token found in localStorage");
             setLoading(false);
             return;
         }
       setLoading(true);
       setError(null);
       const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-        params: { page, limit },
-        headers: { Authorization: token }
+        params: { page, limit, categoryId: selectedCategory },
+        headers: { Authorization: `Bearer ${token}` }
       });
       
       const blogsData = response.data.blogs || [];
       setBlogs(blogsData);
-      
-      // Calculate total pages from backend response
-      if (response.data.totalPages !== undefined && response.data.totalPages !== null) {
-        setTotalPages(response.data.totalPages);
-      } else if (response.data.total !== undefined && response.data.total !== null) {
-        setTotalPages(Math.ceil(response.data.total / limit));
-      } else {
-        // Fallback: If we got exactly 'limit' blogs, assume there might be more pages
-        // If we got fewer, we're on the last page
-        if (blogsData.length === limit) {
-          // We got a full page, so there might be more - set to at least current page + 1
-          setTotalPages(prev => {
-            // If we're on a higher page than what we previously thought was the last page, update it
-            return Math.max(prev, page + 1);
-          });
-        } else {
-          // We got fewer than limit, so this is the last page
-          setTotalPages(page);
-        }
-      }
+      setTotalPages(response.data.totalPages || 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -88,7 +81,7 @@ useEffect(() => {
   };
   
   if (token) fetchData();
-}, [page, limit]);
+}, [page, limit, selectedCategory]);
 
 return {
     loading,
@@ -97,7 +90,54 @@ return {
     page,
     setPage,
     totalPages,
-    limit
+    limit,
+    selectedCategory,
+    setSelectedCategory
 }
+}
+
+export const useCategories = () => {
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/v1/blog/categories`).then(res => {
+            setCategories(res.data.categories);
+            setLoading(false);
+        }).catch(() => {
+            setLoading(false);
+        });
+    }, []);
+
+    return { categories, loading };
+}
+
+export const useUser = () => {
+    const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<{ name: string; username: string } | null>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            setLoading(false);
+            return;
+        }
+
+        axios.get(`${BACKEND_URL}/api/v1/user/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(response => {
+            setUser(response.data.user);
+            setLoading(false);
+        }).catch(() => {
+            setLoading(false);
+        });
+    }, []);
+
+    return {
+        loading,
+        user
+    };
 }
 
