@@ -23,7 +23,7 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@instructiveagonizing/medium-common": ["../common/src/index.ts"]
+      "@instructiveagonizing/medium-common": ["node_modules/@instructiveagonizing/medium-common/src/index.ts"]
     }
   },
   "include": ["src"]
