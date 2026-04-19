@@ -12,8 +12,8 @@
   "dependencies": {
     "@100xdevs/medium-common": "^1.0.0",
     "axios": "^1.15.1",
-    "react": "^19.3.0-canary-da9325b5-20260417",
-    "react-dom": "^19.3.0-canary-da9325b5-20260417",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.1"
   },
   "devDependencies": {
