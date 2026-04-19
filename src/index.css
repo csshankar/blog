@@ -1,6 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-serif: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+}
 
 @layer base {
   body {
@@ -10,11 +12,5 @@
 
   h1, h2, h3, h4, h5, h6 {
     @apply tracking-tight;
-  }
-}
-
-@layer utilities {
-  .font-serif {
-    font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
   }
 }

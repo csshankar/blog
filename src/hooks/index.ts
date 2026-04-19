@@ -118,21 +118,28 @@ export const useUser = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (!token) {
-            setLoading(false);
-            return;
-        }
-
-        axios.get(`${BACKEND_URL}/api/v1/user/me`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+        
+        const fetchUser = async () => {
+            if (!token) {
+                setLoading(false);
+                return;
             }
-        }).then(response => {
-            setUser(response.data.user);
-            setLoading(false);
-        }).catch(() => {
-            setLoading(false);
-        });
+
+            try {
+                const response = await axios.get(`${BACKEND_URL}/api/v1/user/me`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setUser(response.data.user);
+            } catch (e) {
+                console.error(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUser();
     }, []);
 
     return {
