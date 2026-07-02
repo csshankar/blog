@@ -11,7 +11,7 @@ export const Blog = () => {
     })
     if (loading || !blog) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-white dark:bg-[#0d1511] transition-colors duration-200">
                 <Appbar />
                 <div className="h-screen flex flex-col justify-center">
                     <div className="flex justify-center">

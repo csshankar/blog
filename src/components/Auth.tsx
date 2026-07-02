@@ -29,17 +29,17 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         }
     }
     return (
-        <div className="min-h-screen flex items-center justify-center bg-white p-4">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#0d1511] p-4 text-slate-900 dark:text-slate-100 transition-colors duration-200">
             <div className="w-full max-w-md space-y-8">
                 <div className="text-center">
-                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900 tracking-tight">
-                        {type === "signup" ? "Join Medium." : "Welcome back."}
+                    <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        {type === "signup" ? "Join Chronicle." : "Welcome back."}
                     </h2>
-                    <p className="mt-2 text-sm text-gray-600">
+                    <p className="mt-2 text-sm text-gray-600 dark:text-slate-400">
                         {type === "signup" ? (
-                            <>Already have an account? <Link className="font-medium text-green-600 hover:text-green-500 transition-colors" to="/signin">Sign in</Link></>
+                            <>Already have an account? <Link className="font-medium text-emerald-600 dark:text-[#fabc2c] hover:underline transition-colors" to="/signin">Sign in</Link></>
                         ) : (
-                            <>Don't have an account? <Link className="font-medium text-green-600 hover:text-green-500 transition-colors" to="/signup">Sign up</Link></>
+                            <>Don't have an account? <Link className="font-medium text-emerald-600 dark:text-[#fabc2c] hover:underline transition-colors" to="/signup">Sign up</Link></>
                         )}
                     </p>
                 </div>
@@ -84,10 +84,10 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
                         <button 
                             onClick={sendRequest} 
                             disabled={loading}
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-full text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-full text-white dark:text-black bg-black dark:bg-white hover:opacity-90 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                         >
                             {loading ? (
-                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <svg className="animate-spin h-5 w-5 text-white dark:text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
@@ -99,15 +99,15 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-gray-200"></div>
+                            <div className="w-full border-t border-gray-200 dark:border-emerald-950/40"></div>
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-2 bg-white text-gray-500 uppercase tracking-widest text-xs font-semibold">Or continue with</span>
+                            <span className="px-2 bg-white dark:bg-[#0d1511] text-gray-500 dark:text-slate-400 uppercase tracking-widest text-xs font-semibold">Or continue with</span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 gap-3">
-                        <button className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-300 rounded-full bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        <button className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-350 dark:border-emerald-900/30 rounded-full bg-white dark:bg-[#122319]/20 text-sm font-medium text-gray-700 dark:text-slate-200 hover:bg-gray-50 dark:hover:bg-[#122319]/40 transition-colors">
                             <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -132,13 +132,13 @@ interface LabelledInputType {
 function LabelledInput({ label, placeholder, onChange, type }: LabelledInputType) {
     return (
         <div>
-            <label className="block mb-2 text-sm font-semibold text-gray-700 text-left">
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-slate-350 text-left">
                 {label}
             </label>
             <input 
                 onChange={onChange} 
                 type={type || "text"} 
-                className="w-full bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 block p-3 placeholder-gray-400 transition-all" 
+                className="w-full bg-white dark:bg-[#0a120d] border border-gray-300 dark:border-emerald-900/30 text-gray-900 dark:text-white text-sm rounded-lg focus:outline-none focus:border-[#fabc2c] dark:focus:border-[#fabc2c] block p-3 placeholder-gray-400 dark:placeholder-emerald-900 transition-all" 
                 placeholder={placeholder} 
                 required 
             />

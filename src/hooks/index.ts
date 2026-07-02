@@ -23,26 +23,37 @@ export interface Category {
     name: string;
 }
 
+const blogCache: Record<number, Blog> = {};
+
 export const useBlog = ({id}:{id:number})=>{
     const [loading,setLoading]= useState(true);
-    const [blog,setBlog]= useState<Blog>();
+    const [blog,setBlog]= useState<Blog | undefined>(blogCache[id]);
 
-
-useEffect(()=>{
-    axios.get(`${BACKEND_URL}/api/v1/blog/${id}`,{
-        headers:{
-            Authorization: `Bearer ${localStorage.getItem("token")}`
+    useEffect(()=>{
+        if (blogCache[id]) {
+            setBlog(blogCache[id]);
+            setLoading(false);
+            return;
         }
-    }).then(response =>{
-        setBlog(response.data.blog);
-        setLoading(false);
-    })
-},[id])
 
-return {
-    loading,
-    blog
-}
+        setLoading(true);
+        axios.get(`${BACKEND_URL}/api/v1/blog/${id}`,{
+            headers:{
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+        }).then(response =>{
+            blogCache[id] = response.data.blog;
+            setBlog(response.data.blog);
+            setLoading(false);
+        }).catch(() => {
+            setLoading(false);
+        })
+    },[id])
+
+    return {
+        loading,
+        blog
+    }
 }
 export const useBlogs = () => {
 const [loading,setLoading]= useState(true);
@@ -52,6 +63,9 @@ const [page, setPage] = useState(1);
 const [totalPages, setTotalPages] = useState(1);
 const [limit] = useState(10);
 const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+const [searchQuery, setSearchQuery] = useState("");
+const [selectedYear, setSelectedYear] = useState<number | null>(null);
+const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
 
 useEffect(() => {
@@ -66,7 +80,14 @@ useEffect(() => {
       setLoading(true);
       setError(null);
       const response = await axios.get(`${BACKEND_URL}/api/v1/blog/bulk`, {
-        params: { page, limit, categoryId: selectedCategory },
+        params: { 
+            page, 
+            limit, 
+            categoryId: selectedCategory, 
+            search: searchQuery || undefined,
+            year: selectedYear || undefined,
+            month: selectedMonth || undefined
+        },
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -80,8 +101,13 @@ useEffect(() => {
     }
   };
   
-  if (token) fetchData();
-}, [page, limit, selectedCategory]);
+  if (token) {
+      const timer = setTimeout(() => {
+          fetchData();
+      }, 300);
+      return () => clearTimeout(timer);
+  }
+}, [page, limit, selectedCategory, searchQuery, selectedYear, selectedMonth]);
 
 return {
     loading,
@@ -92,7 +118,13 @@ return {
     totalPages,
     limit,
     selectedCategory,
-    setSelectedCategory
+    setSelectedCategory,
+    searchQuery,
+    setSearchQuery,
+    selectedYear,
+    setSelectedYear,
+    selectedMonth,
+    setSelectedMonth
 }
 }
 
@@ -146,5 +178,21 @@ export const useUser = () => {
         loading,
         user
     };
+}
+
+export const useArchives = () => {
+    const [archives, setArchives] = useState<Record<number, number[]>>({});
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/v1/blog/archives`).then(res => {
+            setArchives(res.data.archives || {});
+            setLoading(false);
+        }).catch(() => {
+            setLoading(false);
+        });
+    }, []);
+
+    return { archives, loading };
 }
 
